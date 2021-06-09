@@ -13,7 +13,7 @@ namespace osu.Framework.Primitives
     /// </summary>
     public interface IComponent
     {
-        ///<summary>
+        /// <summary>
         /// The clock for the component. It can be used for keeping track of time across frames.
         /// </summary>
         IFrameBasedClock Clock { get; }
@@ -66,7 +66,7 @@ namespace osu.Framework.Primitives
         bool RemoveWhenNotAlive { get; }
 
         ///<summary>
-        /// The parent of this component in the hierarchy
+        /// The parent of this component in the hierarchy.
         /// </summary>
         Composite<Component> Parent { get; }
 

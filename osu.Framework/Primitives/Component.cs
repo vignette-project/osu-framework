@@ -7,7 +7,7 @@ namespace osu.Framework.Primitives
 {
     /// <summary>
     /// The very basic building block of the framework. Everything will start out as a component
-    /// Regardless of purpose. Components contain the very basic blocks that Framework needs to
+    /// Regardless of purpose. Components contain the very essential things that Framework needs to
     /// track the lifecycle of each block, mainly:
     ///
     /// - Lifetime
