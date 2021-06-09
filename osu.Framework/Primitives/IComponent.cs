@@ -14,21 +14,28 @@ namespace osu.Framework.Primitives
     public interface IComponent
     {
         /// <summary>
+        /// Captures the order in which Drawables were added to a <see cref="IComposite{TComponent}"/>. Each Drawable
+        /// is assigned a monotonically increasing ID upon being added to a <see cref="IComposite{TComponent}"/>. This
+        /// ID is unique within the <see cref="Parent"/> <see cref="IComposite{TComponent}"/>.
+        /// </summary>
+        ulong ChildID { get; }
+
+        /// <summary>
         /// The clock for the component. It can be used for keeping track of time across frames.
         /// </summary>
         IFrameBasedClock Clock { get; }
 
         /// <summary>
         /// Whether <see cref="IFrameBasedClock.ProcessFrame"/> should be automatically invoked on this <see cref="IComponent"/>'s <see cref="Clock"/>
-        /// in <see cref="UpdateSubTree"/>. This should only be set to false in scenarios where the clock is updated elsewhere.
+        /// in <see cref="Component.UpdateSubTree"/>. This should only be set to false in scenarios where the clock is updated elsewhere.
         /// </summary>
         bool ProcessCustomClock { get; set; }
 
         ///<summary>
         /// whether this component has fully loaded.
-        /// this is true if <see cref="UpdateSubTree"/> has ran once on this <see cref="Component"/>
+        /// this is true if <see cref="Component.UpdateSubTree"/> has ran once on this <see cref="Component"/>
         /// </summary>
-        bool IsLoaded { get; set; }
+        bool IsLoaded { get; }
 
         ///<summary>
         /// Whether this component is present for any kind on interaction.
@@ -44,11 +51,6 @@ namespace osu.Framework.Primitives
         /// Whether this component should still exist on the hierarchy.
         /// </summary>
         bool IsAlive { get; }
-
-        /// <summary>
-        /// Whether this component should be disposed when it is automatically removed from its <see cref="Parent"/>.
-        /// </summary>
-        bool DisposeOnDeathRemoval { get; }
 
         /// <summary>
         /// The time at which this component becomes valid.
@@ -68,16 +70,17 @@ namespace osu.Framework.Primitives
         ///<summary>
         /// The parent of this component in the hierarchy.
         /// </summary>
-        Composite<Component> Parent { get; }
-
-        void Load();
-
-        void UpdateSubTree();
-
-        void Update();
+        Composite<IComponent> Parent { get; }
 
         /// <summary>
-        /// This event is fired after the <see cref="Update"/> method is called at the end of
+        /// Updates this Drawable and all Drawables further down the scene graph.
+        /// Called once every frame.
+        /// </summary>
+        /// <returns>False if the drawable should not be updated.</returns>
+        bool UpdateSubTree();
+
+        /// <summary>
+        /// This event is fired after the <see cref="Component.Update"/> method is called at the end of
         /// <see cref="UpdateSubTree"/>. It should be used when a simple action should be performed
         /// at the end of every update call which does not warrant overriding the component.
         /// </summary>

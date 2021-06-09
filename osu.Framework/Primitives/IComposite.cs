@@ -1,13 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-using System.Collections.Generic;
+using osu.Framework.Allocation;
 
 namespace osu.Framework.Primitives
 {
     public interface IComposite<out TComponent> : IComponent
-    where TComponent : IComponent
+        where TComponent : IComponent
     {
-
+        IReadOnlyDependencyContainer Dependencies { get; }
     }
 }
