@@ -12,7 +12,8 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Development;
 using osu.Framework.Extensions.TypeExtensions;
-using osu.Framework.Graphics.Transforms;
+using osu.Framework.Logging;
+using osu.Framework.Primitives.Transforms;
 using osu.Framework.Statistics;
 using osu.Framework.Threading;
 using osu.Framework.Timing;
@@ -214,7 +215,32 @@ namespace osu.Framework.Primitives
 
         private void load(IFrameBasedClock clock, IReadOnlyDependencyContainer dependencies)
         {
+            LoadThread = Thread.CurrentThread;
 
+            UpdateClock(clock);
+
+            double timeBefore = DebugUtils.LogPerformanceIssues ? perf_clock.CurrentTime : 0;
+
+            InjectDependencies(dependencies);
+
+            cacheUnbindActions();
+
+            LoadAsyncComplete();
+
+            if (timeBefore > 1000)
+            {
+                double loadDuration = perf_clock.CurrentTime - timeBefore;
+
+                bool blocking = ThreadSafety.IsUpdateThread;
+
+                double allowedDuration = blocking ? 16 : 100;
+
+                if (loadDuration > allowedDuration)
+                {
+                    Logger.Log($@"{ToString()} took {loadDuration:0.00}ms to load" + (blocking ? " (and blocked the update thread)" : " (async)"), LoggingTarget.Performance,
+                        blocking ? LogLevel.Important : LogLevel.Verbose);
+                }
+            }
         }
 
         protected virtual void InjectDependencies(IReadOnlyDependencyContainer dependencies) => dependencies.Inject(this);
@@ -417,8 +443,8 @@ namespace osu.Framework.Primitives
 
                     break;
             }
-    #endregion
         }
+    #endregion
 
         public class InvalidThreadForMutationException : InvalidOperationException
         {
