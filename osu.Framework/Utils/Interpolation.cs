@@ -5,11 +5,11 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Primitives;
-using osu.Framework.Graphics.Transforms;
+using osu.Framework.Primitives.Transforms;
+using osu.Framework.Primitives;
 using osuTK;
 using osuTK.Graphics;
 
