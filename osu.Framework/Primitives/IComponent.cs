@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
+using osu.Framework.Primitives.Transforms;
 using osu.Framework.Timing;
 
 namespace osu.Framework.Primitives
@@ -11,7 +12,7 @@ namespace osu.Framework.Primitives
     /// While it is not expected to be implemented by other classes other than <see cref="Component"/>, it serves
     /// as a baseline foundation for derived classes as well.
     /// </summary>
-    public interface IComponent
+    public interface IComponent : ITransformable
     {
         /// <summary>
         /// Captures the order in which Drawables were added to a <see cref="IComposite{TComponent}"/>. Each Drawable

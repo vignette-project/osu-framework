@@ -48,13 +48,30 @@ namespace osu.Framework.Primitives
 
         public static readonly GlobalStatistic<int> total_count = GlobalStatistics.Get<int>(nameof(Component), "Total loaded");
 
-        private static readonly StopwatchClock perf_clock = new StopwatchClock(true);
+        internal static readonly StopwatchClock perf_clock = new StopwatchClock(true);
+
+        /// <summary>
+        /// A name used to identify this Drawable internally.
+        /// </summary>
+        public string Name = string.Empty;
+
+        public override string ToString()
+        {
+            string shortClass = GetType().ReadableName();
+
+            if (!string.IsNullOrEmpty(Name))
+                return $@"{Name} ({shortClass})";
+            else
+                return shortClass;
+        }
+
+        public virtual Component Empty() => new EmptyComponent();
 
         #region Fields - Clock
 
         private IFrameBasedClock customClock;
 
-        private IFrameBasedClock clock;
+        internal IFrameBasedClock clock;
 
         public override IFrameBasedClock Clock
         {
@@ -65,14 +82,13 @@ namespace osu.Framework.Primitives
                 UpdateClock(customClock);
             }
         }
-
         public bool ProcessCustomClock { get; set; } = true;
 
         #endregion
 
         #region Fields - Lifecycle
 
-        protected internal bool IsDisposed { get; private set; }
+        public bool IsDisposed { get; internal set; }
 
         public bool IsAlive { get; internal set; }
 
@@ -416,6 +432,8 @@ namespace osu.Framework.Primitives
 
             }
         }
+
+        internal sealed override void EnsureTransformMutationAllowed() => EnsureMutationAllowed(nameof(Transforms));
 
         internal void EnsureMutationAllowed(string member)
         {
