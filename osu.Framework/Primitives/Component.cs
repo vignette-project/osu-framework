@@ -64,7 +64,10 @@ namespace osu.Framework.Primitives
             else
                 return shortClass;
         }
-
+        
+        /// <summary>
+        /// Creates a new instance of an empty <see cref="Component"/>.
+        /// </summary>
         public virtual Component Empty() => new EmptyComponent();
 
         #region Fields - Clock

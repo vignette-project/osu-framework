@@ -3,9 +3,6 @@
 
 namespace osu.Framework.Primitives
 {
-    /// <summary>
-    /// Creates a new instance of an empty <see cref="Component"/>.
-    /// </summary>
     internal class EmptyComponent : Component
     {
     }
