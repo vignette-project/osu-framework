@@ -27,20 +27,20 @@ namespace osu.Framework.Primitives
     ///
     /// - Lifetime
     /// - Clock
-    /// - Bindables (IPC)
+    /// - Bindables
     ///
     /// Components, however, only appear in the scene graph, it doesn't appear visually by default
     /// which makes it useful for background tasks. If you wish to implement components with visual
     /// representations, <see cref="Graphics.Drawable"/> will serve that purpose.
     /// </summary>
-    public abstract partial class Component : Transformable, IComponent, IDisposable
+    public abstract class Component : Transformable, IComponent, IDisposable
     {
-        protected Component ()
+        protected Component()
         {
             total_count.Value++;
         }
 
-        private Composite<IComponent> parent;
+        private Composite<Component> parent;
 
         public ulong ChildID { get; internal set; }
 
@@ -51,7 +51,7 @@ namespace osu.Framework.Primitives
         internal static readonly StopwatchClock perf_clock = new StopwatchClock(true);
 
         /// <summary>
-        /// A name used to identify this Drawable internally.
+        /// A name used to identify this Component internally.
         /// </summary>
         public string Name = string.Empty;
 
@@ -64,13 +64,11 @@ namespace osu.Framework.Primitives
             else
                 return shortClass;
         }
-        
+
         /// <summary>
         /// Creates a new instance of an empty <see cref="Component"/>.
         /// </summary>
-        public virtual Component Empty() => new EmptyComponent();
-
-        #region Fields - Clock
+        public static Component Empty() => new EmptyComponent();
 
         private IFrameBasedClock customClock;
 
@@ -87,13 +85,17 @@ namespace osu.Framework.Primitives
         }
         public bool ProcessCustomClock { get; set; } = true;
 
-        #endregion
-
-        #region Fields - Lifecycle
+        private bool isDisposed;
 
         public bool IsDisposed { get; internal set; }
 
         public bool IsAlive { get; internal set; }
+
+        /// <summary>
+        /// Whether this Component should be disposed when it is automatically removed from
+        /// its <see cref="Parent"/> due to <see cref="ShouldBeAlive"/> being false.
+        /// </summary>
+        public virtual bool DisposeOnDeathRemoval => RemoveCompletedTransforms;
 
         public bool IsLoaded => loadState >= LoadState.Loaded;
 
@@ -147,12 +149,18 @@ namespace osu.Framework.Primitives
             }
         }
 
-        public virtual bool  RemoveWhenNotAlive => Parent == null || Time.Current > LifetimeStart;
+        public virtual bool RemoveWhenNotAlive => Parent == null || Time.Current > LifetimeStart;
 
-        #endregion
+        protected internal virtual bool ShouldBeAlive
+        {
+            get
+            {
+                if (LifetimeStart == double.MinValue && LifetimeEnd == double.MaxValue)
+                    return true;
 
-        #region Fields - Scheduling
-
+                return Time.Current >= LifetimeStart && Time.Current < LifetimeEnd;
+            }
+        }
 
         private readonly object schedulerAcquisitionLock = new object();
 
@@ -170,10 +178,6 @@ namespace osu.Framework.Primitives
             }
         }
 
-        #endregion
-
-        #region Fields - Bindables
-
         private static readonly ConcurrentDictionary<Type, Action<object>> unbind_action_cache = new ConcurrentDictionary<Type, Action<object>>();
 
         private bool unbindComplete;
@@ -183,19 +187,11 @@ namespace osu.Framework.Primitives
         /// </summary>
         internal event Action OnUnbindAllBindables;
 
-        #endregion
-
-        #region Methods - Clock
-
         internal virtual void UpdateClock(IFrameBasedClock clock)
         {
             this.clock = customClock ?? clock;
             scheduler?.UpdateClock(this.clock);
         }
-
-        #endregion
-
-        #region Methods - Lifecycle
 
         internal bool LoadFromAsync(IFrameBasedClock clock, IReadOnlyDependencyContainer dependencies, bool isDirectAsyncContext = false)
         {
@@ -322,7 +318,7 @@ namespace osu.Framework.Primitives
             return true;
         }
 
-        protected virtual internal ScheduledDelegate Schedule(Action action) => Scheduler.Add(action);
+        protected internal virtual ScheduledDelegate Schedule(Action action) => Scheduler.Add(action);
 
         /// <summary>
         /// Disposes this drawable.
@@ -354,10 +350,6 @@ namespace osu.Framework.Primitives
 
             IsDisposed = true;
         }
-
-        #endregion
-
-        #region Methods - Bindables
 
         private void cacheUnbindActions()
         {
@@ -416,10 +408,7 @@ namespace osu.Framework.Primitives
             OnUnbindAllBindables?.Invoke();
         }
 
-        #endregion
-
-        #region Inheritance
-        public Composite<IComponent> Parent
+        public Composite Parent
         {
             get => parent;
             internal set
@@ -465,7 +454,6 @@ namespace osu.Framework.Primitives
                     break;
             }
         }
-    #endregion
 
         public class InvalidThreadForMutationException : InvalidOperationException
         {

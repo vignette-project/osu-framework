@@ -32,6 +32,8 @@ namespace osu.Framework.Primitives
         /// </summary>
         bool ProcessCustomClock { get; set; }
 
+        bool DisposeOnDeathRemoval { get; }
+
         ///<summary>
         /// whether this component has fully loaded.
         /// this is true if <see cref="Component.UpdateSubTree"/> has ran once on this <see cref="Component"/>
@@ -71,7 +73,7 @@ namespace osu.Framework.Primitives
         ///<summary>
         /// The parent of this component in the hierarchy.
         /// </summary>
-        Composite<IComponent> Parent { get; }
+        Composite<Component> Parent { get; internal set; }
 
         /// <summary>
         /// Updates this Drawable and all Drawables further down the scene graph.
