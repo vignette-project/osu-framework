@@ -409,7 +409,7 @@ namespace osu.Framework.Primitives
             OnUnbindAllBindables?.Invoke();
         }
 
-        public Composite Parent
+        public CompositeDrawable Parent
         {
             get => parent;
             internal set

@@ -74,7 +74,7 @@ namespace osu.Framework.Primitives
         ///<summary>
         /// The parent of this component in the hierarchy.
         /// </summary>
-        CompositeDrawable Parent { get; internal set; }
+        CompositeDrawable Parent { get; }
 
         /// <summary>
         /// Updates this Drawable and all Drawables further down the scene graph.
