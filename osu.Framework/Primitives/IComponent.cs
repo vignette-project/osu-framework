@@ -16,9 +16,9 @@ namespace osu.Framework.Primitives
     public interface IComponent : ITransformable
     {
         /// <summary>
-        /// Captures the order in which Drawables were added to a <see cref="IComposite{TComponent}"/>. Each Drawable
-        /// is assigned a monotonically increasing ID upon being added to a <see cref="IComposite{TComponent}"/>. This
-        /// ID is unique within the <see cref="Parent"/> <see cref="IComposite{TComponent}"/>.
+        /// Captures the order in which Drawables were added to a <see cref="CompositeDrawable"/>. Each Drawable
+        /// is assigned a monotonically increasing ID upon being added to a <see cref="CompositeDrawable"/>. This
+        /// ID is unique within the <see cref="Parent"/> <see cref="CompositeDrawable"/>.
         /// </summary>
         ulong ChildID { get; }
 
