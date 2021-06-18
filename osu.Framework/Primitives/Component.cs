@@ -17,6 +17,7 @@ using osu.Framework.Primitives.Transforms;
 using osu.Framework.Statistics;
 using osu.Framework.Threading;
 using osu.Framework.Timing;
+using osu.Framework.Graphics.Containers;
 
 namespace osu.Framework.Primitives
 {
@@ -40,7 +41,7 @@ namespace osu.Framework.Primitives
             total_count.Value++;
         }
 
-        private Composite<Component> parent;
+        private CompositeDrawable parent;
 
         public ulong ChildID { get; internal set; }
 

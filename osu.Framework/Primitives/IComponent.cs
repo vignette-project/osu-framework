@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Primitives.Transforms;
 using osu.Framework.Timing;
 
@@ -73,7 +74,7 @@ namespace osu.Framework.Primitives
         ///<summary>
         /// The parent of this component in the hierarchy.
         /// </summary>
-        Composite<Component> Parent { get; internal set; }
+        CompositeDrawable Parent { get; internal set; }
 
         /// <summary>
         /// Updates this Drawable and all Drawables further down the scene graph.
