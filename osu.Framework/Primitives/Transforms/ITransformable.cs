@@ -3,9 +3,8 @@
 
 using System;
 using osu.Framework.Allocation;
-using osu.Framework.Timing;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     public interface ITransformable
     {
@@ -25,11 +24,6 @@ namespace osu.Framework.Graphics.Transforms
         /// <returns>An <see cref="InvokeOnDisposal"/> to be used in a using() statement.</returns>
         /// <exception cref="InvalidOperationException">Absolute sequences should never be nested inside another existing sequence.</exception>
         IDisposable BeginAbsoluteSequence(double newTransformStartTime, bool recursive = true);
-
-        /// <summary>
-        /// The current frame's time as observed by this class's <see cref="Transform"/>s.
-        /// </summary>
-        FrameTimeInfo Time { get; }
 
         double TransformStartTime { get; }
 

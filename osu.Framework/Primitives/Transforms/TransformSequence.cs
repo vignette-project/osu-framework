@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     /// <summary>
     /// A sequence of <see cref="Transform"/>s all operating upon the same <see cref="ITransformable"/>

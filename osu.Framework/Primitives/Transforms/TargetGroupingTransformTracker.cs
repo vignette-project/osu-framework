@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using osu.Framework.Lists;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     /// <summary>
     /// Tracks the lifetime of transforms for one specified target member.

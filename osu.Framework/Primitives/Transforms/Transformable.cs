@@ -5,28 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Allocation;
-using osu.Framework.Timing;
+using osu.Framework.Graphics;
 using osu.Framework.Utils;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     /// <summary>
     /// A type of object which can have <see cref="Transform"/>s operating upon it.
     /// An implementer of this class must call <see cref="UpdateTransforms"/> to
     /// update and apply its <see cref="Transform"/>s.
     /// </summary>
-    public abstract class Transformable : ITransformable
+    public abstract class Transformable : Component, ITransformable
     {
-        /// <summary>
-        /// The clock that is used to provide the timing for this object's <see cref="Transform"/>s.
-        /// </summary>
-        public abstract IFrameBasedClock Clock { get; set; }
-
-        /// <summary>
-        /// The current frame's time as observed by this class's <see cref="Clock"/>.
-        /// </summary>
-        public FrameTimeInfo Time => Clock.TimeInfo;
-
         /// <summary>
         /// The starting time to use for new <see cref="Transform"/>s.
         /// </summary>
@@ -327,7 +317,7 @@ namespace osu.Framework.Graphics.Transforms
         /// <see cref="TransformableExtensions.PopulateTransform{TValue, TEasing, TThis}"/>.
         /// Added <see cref="Transform"/>s are immediately applied, and therefore have an immediate effect on this object if the current time of this
         /// object falls within <see cref="Transform.StartTime"/> and <see cref="Transform.EndTime"/>.
-        /// If <see cref="Clock"/> is null, e.g. because this object has just been constructed, then the given transform will be finished instantaneously.
+        /// If <see cref="Component.Clock"/> is null, e.g. because this object has just been constructed, then the given transform will be finished instantaneously.
         /// </summary>
         /// <param name="transform">The <see cref="Transform"/> to be added.</param>
         /// <param name="customTransformID">When not null, the <see cref="Transform.TransformID"/> to assign for ordering.</param>

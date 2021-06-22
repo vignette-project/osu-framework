@@ -3,7 +3,7 @@
 
 using System;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     /// <summary>
     /// An easing function corresponding to one of the <see cref="Easing"/> types.

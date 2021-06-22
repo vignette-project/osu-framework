@@ -4,7 +4,7 @@
 using osu.Framework.Bindables;
 using osu.Framework.Utils;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     internal class TransformBindable<TValue, TEasing, T> : Transform<TValue, TEasing, T>
         where T : class, ITransformable

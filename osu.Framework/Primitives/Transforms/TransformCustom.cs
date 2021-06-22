@@ -9,7 +9,7 @@ using osu.Framework.Extensions.TypeExtensions;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     /// <summary>
     /// A transform which operates on arbitrary fields or properties of a given target.

@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace osu.Framework.Graphics.Transforms
+namespace osu.Framework.Primitives.Transforms
 {
     public abstract class Transform
     {
